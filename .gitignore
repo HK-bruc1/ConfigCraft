@@ -1,0 +1,37 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Build output
+/build/dhf-config-manager.exe
+
+# Go build cache and sum
+go.sum
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+*.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary and log files
+*.tmp
+*.log
+nul
+
+# User generated configs (examples)
+user-config.yaml
+output.conf
+
+# Go module cache
+/vendor/
+
+# Development artifacts
+*_test
+*_backup

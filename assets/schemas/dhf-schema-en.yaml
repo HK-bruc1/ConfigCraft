@@ -1,0 +1,239 @@
+schema_version: "1.0"
+display_name: "DHF Headset Configuration"
+
+sections:
+  basic:
+    name: "Basic Config"
+    icon: "settings"
+    fields:
+      ic_model:
+        type: "select"
+        label: "IC Model"
+        options:
+          - {value: 0, label: "AC7106A8"}
+          - {value: 1, label: "AC7103D4"}
+        default: 0
+        required: true
+      
+      vm_operation:
+        type: "select"
+        label: "VM Operation"
+        options:
+          - {value: "erase", label: "Erase"}
+          - {value: "keep", label: "Keep"}
+        default: "erase"
+      
+      pa_control:
+        type: "boolean"
+        label: "PA Manual Control"
+        default: false
+  
+  key_actions:
+    name: "Key Configuration"
+    icon: "keyboard"
+    groups:
+      call_scenario:
+        name: "Call Scenario"
+        fields:
+          active_click:
+            type: "select"
+            label: "Click During Call"
+            options:
+              - {value: "APP_MSG_NULL", label: "No Action"}
+              - {value: "APP_MSG_CALL_ANSWER", label: "Answer"}
+              - {value: "APP_MSG_CALL_HANGUP", label: "Hangup"}
+              - {value: "APP_MSG_VOL_UP", label: "Volume Up"}
+              - {value: "APP_MSG_VOL_DOWN", label: "Volume Down"}
+            default: "APP_MSG_NULL"
+          
+          incoming_click:
+            type: "select"
+            label: "Incoming Call Click"
+            options:
+              - {value: "APP_MSG_CALL_ANSWER", label: "Answer"}
+              - {value: "APP_MSG_CALL_REJECT", label: "Reject"}
+              - {value: "APP_MSG_NULL", label: "No Action"}
+            default: "APP_MSG_CALL_ANSWER"
+          
+          incoming_double_click:
+            type: "select"
+            label: "Incoming Call Double Click"
+            options:
+              - {value: "APP_MSG_CALL_REJECT", label: "Reject"}
+              - {value: "APP_MSG_CALL_ANSWER", label: "Answer"}
+              - {value: "APP_MSG_NULL", label: "No Action"}
+            default: "APP_MSG_CALL_REJECT"
+      
+      music_scenario:
+        name: "Music Scenario"
+        fields:
+          tws_connected_left_click:
+            type: "select"
+            label: "TWS Connected - Left Click"
+            options:
+              - {value: "APP_MSG_MUSIC_PLAY_PAUSE", label: "Play/Pause"}
+              - {value: "APP_MSG_MUSIC_PREV", label: "Previous"}
+              - {value: "APP_MSG_MUSIC_NEXT", label: "Next"}
+              - {value: "APP_MSG_VOL_UP", label: "Volume Up"}
+              - {value: "APP_MSG_VOL_DOWN", label: "Volume Down"}
+              - {value: "APP_MSG_NULL", label: "No Action"}
+            default: "APP_MSG_MUSIC_PLAY_PAUSE"
+          
+          tws_connected_right_click:
+            type: "select"
+            label: "TWS Connected - Right Click"
+            options:
+              - {value: "APP_MSG_VOL_UP", label: "Volume Up"}
+              - {value: "APP_MSG_VOL_DOWN", label: "Volume Down"}
+              - {value: "APP_MSG_MUSIC_PLAY_PAUSE", label: "Play/Pause"}
+              - {value: "APP_MSG_MUSIC_PREV", label: "Previous"}
+              - {value: "APP_MSG_MUSIC_NEXT", label: "Next"}
+              - {value: "APP_MSG_NULL", label: "No Action"}
+            default: "APP_MSG_VOL_UP"
+          
+          tws_disconnected_click:
+            type: "select"
+            label: "TWS Disconnected - Click"
+            options:
+              - {value: "APP_MSG_MUSIC_PLAY_PAUSE", label: "Play/Pause"}
+              - {value: "APP_MSG_MUSIC_PREV", label: "Previous"}
+              - {value: "APP_MSG_MUSIC_NEXT", label: "Next"}
+              - {value: "APP_MSG_NULL", label: "No Action"}
+            default: "APP_MSG_MUSIC_PLAY_PAUSE"
+      
+      special_keys:
+        name: "Special Keys"
+        fields:
+          factory_reset:
+            type: "select"
+            label: "Factory Reset"
+            options:
+              - {value: "long_press_10s", label: "Long Press 10s"}
+              - {value: "triple_click", label: "Triple Click"}
+              - {value: "disabled", label: "Disabled"}
+            default: "long_press_10s"
+          
+          dut_mode:
+            type: "select"
+            label: "DUT Test Mode"
+            options:
+              - {value: "double_click_power_on", label: "Power On Double Click"}
+              - {value: "long_press_power_on", label: "Power On Long Press"}
+              - {value: "disabled", label: "Disabled"}
+            default: "double_click_power_on"
+  
+  led_config:
+    name: "LED Configuration"
+    icon: "lightbulb"
+    groups:
+      tws_status:
+        name: "TWS Connection Status"
+        fields:
+          tws_pairing:
+            type: "select"
+            label: "TWS Pairing"
+            options:
+              - {value: "LED_STA_FAST_FLASH_BLUE", label: "Blue Fast Flash"}
+              - {value: "LED_STA_SLOW_FLASH_BLUE", label: "Blue Slow Flash"}
+              - {value: "LED_STA_FAST_FLASH_RED", label: "Red Fast Flash"}
+              - {value: "LED_STA_ALL_OFF", label: "Off"}
+            default: "LED_STA_FAST_FLASH_BLUE"
+          
+          tws_connected:
+            type: "select"
+            label: "TWS Connected"
+            options:
+              - {value: "LED_STA_ALL_OFF", label: "Off"}
+              - {value: "LED_STA_SLOW_FLASH_BLUE", label: "Blue Slow Flash"}
+              - {value: "LED_STA_SOLID_BLUE", label: "Blue Solid"}
+            default: "LED_STA_ALL_OFF"
+          
+          tws_disconnected:
+            type: "select"
+            label: "TWS Disconnected"
+            options:
+              - {value: "LED_STA_FAST_FLASH_RED", label: "Red Fast Flash"}
+              - {value: "LED_STA_SLOW_FLASH_RED", label: "Red Slow Flash"}
+              - {value: "LED_STA_ALL_OFF", label: "Off"}
+            default: "LED_STA_FAST_FLASH_RED"
+      
+      bt_status:
+        name: "Bluetooth Connection Status"
+        fields:
+          bt_pairing:
+            type: "select"
+            label: "Bluetooth Pairing"
+            options:
+              - {value: "LED_STA_FAST_FLASH_BLUE", label: "Blue Fast Flash"}
+              - {value: "LED_STA_SLOW_FLASH_BLUE", label: "Blue Slow Flash"}
+              - {value: "LED_STA_ALTERNATE_RED_BLUE", label: "Red Blue Alternating"}
+            default: "LED_STA_ALTERNATE_RED_BLUE"
+          
+          bt_connected:
+            type: "select"
+            label: "Bluetooth Connected"
+            options:
+              - {value: "LED_STA_ALL_OFF", label: "Off"}
+              - {value: "LED_STA_SOLID_BLUE", label: "Blue Solid"}
+              - {value: "LED_STA_SLOW_FLASH_BLUE", label: "Blue Slow Flash"}
+            default: "LED_STA_ALL_OFF"
+      
+      system_events:
+        name: "System Events"
+        fields:
+          power_on:
+            type: "select"
+            label: "Power On"
+            options:
+              - {value: "LED_STA_SOLID_BLUE_2S", label: "Blue Solid 2s"}
+              - {value: "LED_STA_FAST_FLASH_BLUE_3TIMES", label: "Blue Flash 3 Times"}
+              - {value: "LED_STA_ALL_OFF", label: "Off"}
+            default: "LED_STA_SOLID_BLUE_2S"
+          
+          power_off:
+            type: "select"
+            label: "Power Off"
+            options:
+              - {value: "LED_STA_SOLID_RED_2S", label: "Red Solid 2s"}
+              - {value: "LED_STA_FAST_FLASH_RED_3TIMES", label: "Red Flash 3 Times"}
+              - {value: "LED_STA_ALL_OFF", label: "Off"}
+            default: "LED_STA_SOLID_RED_2S"
+          
+          low_battery:
+            type: "select"
+            label: "Low Battery"
+            options:
+              - {value: "LED_STA_SLOW_FLASH_RED", label: "Red Slow Flash"}
+              - {value: "LED_STA_FAST_FLASH_RED", label: "Red Fast Flash"}
+              - {value: "LED_STA_ALL_OFF", label: "Off"}
+            default: "LED_STA_SLOW_FLASH_RED"
+  
+  power_mgmt:
+    name: "Power Management"
+    icon: "battery"
+    fields:
+      low_battery_threshold:
+        type: "number"
+        label: "Low Battery Threshold (%)"
+        min: 5
+        max: 30
+        default: 15
+      
+      auto_shutdown_time:
+        type: "number"
+        label: "Auto Shutdown Time (min)"
+        min: 1
+        max: 60
+        default: 10
+      
+      charging_indication:
+        type: "boolean"
+        label: "Charging Indication"
+        default: true
+      
+      battery_report_interval:
+        type: "number"
+        label: "Battery Report Interval (s)"
+        min: 10
+        max: 300
+        default: 60
