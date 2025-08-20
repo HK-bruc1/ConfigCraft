@@ -9,7 +9,7 @@ import (
 )
 
 type ConfigTree struct {
-	container         *fyne.Container
+	container         fyne.CanvasObject
 	tree             *widget.Tree
 	schema           *models.Schema
 	selectionCallback func(string)
@@ -24,7 +24,15 @@ func NewConfigTree() *ConfigTree {
 			return uid == ""
 		},
 		CreateNode: func(branch bool) fyne.CanvasObject {
-			return widget.NewLabel("")
+			if branch {
+				// 分支节点使用更显眼的样式
+				label := widget.NewLabelWithStyle("", fyne.TextAlignLeading, fyne.TextStyle{Bold: true})
+				return label
+			} else {
+				// 叶子节点使用普通样式
+				label := widget.NewLabel("")
+				return label
+			}
 		},
 		UpdateNode: func(uid string, branch bool, node fyne.CanvasObject) {
 			label := node.(*widget.Label)
@@ -32,19 +40,8 @@ func NewConfigTree() *ConfigTree {
 		},
 	}
 	
-	// 创建标题标签
-	titleLabel := widget.NewLabel("Configuration")
-	titleLabel.Alignment = fyne.TextAlignCenter
-	
-	// 创建带标题的容器
-	container := container.NewBorder(
-		container.NewVBox(
-			titleLabel,
-			widget.NewSeparator(),
-		),
-		nil, nil, nil,
-		container.NewScroll(tree), // 添加滚动支持
-	)
+	// 简化容器，移除多余的标题和装饰
+	container := container.NewScroll(tree)
 	
 	ct := &ConfigTree{
 		container: container,
@@ -60,7 +57,7 @@ func NewConfigTree() *ConfigTree {
 	return ct
 }
 
-func (ct *ConfigTree) Container() *fyne.Container {
+func (ct *ConfigTree) Container() fyne.CanvasObject {
 	return ct.container
 }
 

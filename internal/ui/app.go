@@ -32,7 +32,7 @@ func NewApp() *App {
 	
 	window := fyneApp.NewWindow("DHF Configuration Manager")
 	
-	// 设置窗口属性 - 更合理的默认尺寸
+	// 设置窗口属性 - 保持原定尺寸
 	window.Resize(fyne.NewSize(900, 650))
 	window.SetFixedSize(false) // 允许调整大小
 	window.CenterOnScreen()
@@ -56,37 +56,50 @@ func (a *App) Initialize() error {
 }
 
 func (a *App) setupLayout() {
-	// 创建主分割面板，设置合适的比例
-	mainSplit := container.NewHSplit(
+	// 设置toolbar的window引用
+	a.toolbar.SetWindow(a.window)
+	
+	// 左侧区域：配置分组导航
+	leftPanel := container.NewBorder(
+		container.NewVBox(
+			widget.NewLabelWithStyle("Configuration Groups", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
+			widget.NewSeparator(),
+		),
+		nil, nil, nil,
 		a.tree.Container(),
+	)
+	
+	// 右侧区域：详细配置选项
+	rightPanel := container.NewBorder(
+		container.NewVBox(
+			widget.NewLabelWithStyle("Configuration Options", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
+			widget.NewSeparator(),
+		),
+		nil, nil, nil,
 		a.editor.Container(),
 	)
-	mainSplit.SetOffset(0.28) // 左侧占28%，右侧占72%
 	
-	// 设置左侧树形组件的合理宽度
-	a.tree.Container().Resize(fyne.NewSize(220, 0))
+	// 创建主分割面板
+	mainSplit := container.NewHSplit(leftPanel, rightPanel)
+	mainSplit.SetOffset(0.3) // 左侧30%，右侧70%
 	
-	// 创建工具栏
-	toolbar := container.NewVBox(
-		a.toolbar.Container(),
-		widget.NewSeparator(),
-	)
-	
-	// 创建状态栏
-	statusBar := container.NewBorder(
-		nil, nil,
-		widget.NewLabel("Ready"),
-		widget.NewLabel("DHF Config Manager v1.0"),
-		nil,
-	)
-	
-	// 整体布局：顶部工具栏，中间主内容，底部状态栏
+	// 整体布局：工具栏在顶部，分界线，主要内容区域
 	content := container.NewBorder(
-		toolbar,      // 顶部
-		statusBar,    // 底部
-		nil,          // 左侧
-		nil,          // 右侧
-		mainSplit,    // 中心内容
+		// 顶部：工具栏 + 分界线
+		container.NewVBox(
+			a.toolbar.Container(),
+			widget.NewSeparator(),
+		),
+		// 底部：状态栏
+		container.NewBorder(
+			widget.NewSeparator(), nil,
+			widget.NewLabel("Ready"),
+			widget.NewLabel("DHF Configuration Manager"),
+			nil,
+		),
+		nil, nil, // 左右留空
+		// 中心：主要内容区域
+		mainSplit,
 	)
 	
 	a.window.SetContent(content)
