@@ -27,8 +27,8 @@ func NewApp() *App {
 	fyneApp := app.New()
 	fyneApp.SetIcon(nil)
 	
-	// 设置中文支持 - 暂时禁用自定义主题
-	// fyneApp.Settings().SetTheme(&chineseTheme{})
+	// 使用简化的中文主题支持
+	fyneApp.Settings().SetTheme(NewSimpleChineseTheme())
 	
 	window := fyneApp.NewWindow("DHF Configuration Manager")
 	

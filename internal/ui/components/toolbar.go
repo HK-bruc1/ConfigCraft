@@ -78,11 +78,11 @@ func (t *Toolbar) showAboutDialog() {
 	// 创建现代化的关于对话框内容
 	appTitle := widget.NewLabelWithStyle("DHF Configuration Manager", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 	
-	versionLabel := widget.NewLabelWithStyle("Version 0.2.0", fyne.TextAlignCenter, fyne.TextStyle{})
+	versionLabel := widget.NewLabelWithStyle("Version 0.2.1", fyne.TextAlignCenter, fyne.TextStyle{})
 	authorLabel := widget.NewLabelWithStyle("Created by Felix", fyne.TextAlignCenter, fyne.TextStyle{})
 	
 	description := widget.NewLabelWithStyle(
-		"A modern visual configuration tool for DHF AC710N-V300P03 SDK\nthat converts complex configuration files into user-friendly interfaces.",
+		"DHF AC710N-V300P03 SDK 现代化可视配置工具\n将复杂配置文件转换为友好的图形界面\n\nA modern visual configuration tool for DHF SDK",
 		fyne.TextAlignCenter, 
 		fyne.TextStyle{},
 	)

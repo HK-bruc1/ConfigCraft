@@ -85,9 +85,15 @@ sections:
 3. conf output automatically includes new fields with proper naming conventions
 
 ### Known Issues to Address
-- Chinese character display in GUI (Fyne font rendering issue)
+- ✅ ~~Chinese character display in GUI~~ **FIXED** - Using FYNE_FONT environment variable with simhei.ttf
 - Missing conf-to-YAML import functionality  
 - No configuration validation/error checking
+
+### Chinese Font Support Solution
+- **Environment Variable**: `FYNE_FONT=C:\Windows\Fonts\simhei.ttf`
+- **Key Discovery**: Fyne doesn't support TTC font collections, requires individual TTF files
+- **Working Font**: SimHei (黑体) provides excellent Chinese character support
+- **Implementation**: Set in main.go before app initialization
 
 ### GUI Design Constraints
 - **Window Size**: Keep the default window size at 900x650 pixels - DO NOT modify this size
