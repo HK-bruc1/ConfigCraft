@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"path/filepath"
 
 	"dhf-config-manager/internal/ui"
 )
@@ -24,13 +23,7 @@ func main() {
 		log.Fatal("Failed to initialize app:", err)
 	}
 	
-	// 加载中文schema（中文字体问题已解决）
-	schemaPath := filepath.Join("assets", "schemas", "dhf-schema.yaml")
-	if err := app.LoadSchema(schemaPath); err != nil {
-		log.Printf("Warning: Failed to load schema: %v", err)
-	} else {
-		log.Printf("Successfully loaded Chinese schema: %s", schemaPath)
-	}
+	log.Println("DHF Configuration Manager started. Please load a configuration file using the toolbar.")
 	
 	app.Run()
 }

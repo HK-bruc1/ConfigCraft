@@ -47,6 +47,8 @@ func (ce *ConfigEditor) SetSchema(schema *models.Schema) {
 
 func (ce *ConfigEditor) SetConfig(config *models.UserConfig) {
 	ce.userConfig = config
+	// 触发当前显示内容的刷新
+	ce.content.Refresh()
 }
 
 func (ce *ConfigEditor) ShowSection(sectionID string) {

@@ -1,0 +1,24 @@
+schema_version: "1.0"
+values:
+  # 简单配置测试
+  device_name: "TestDevice"
+  port: 8080
+  enabled: true
+  
+  # 二级分组测试
+  network.host: "localhost"
+  network.timeout: 30
+  network.ssl_enabled: false
+  
+  # 三级分组测试
+  database.connection.host: "192.168.1.100"
+  database.connection.port: 3306
+  database.connection.username: "admin"
+  database.settings.pool_size: 10
+  database.settings.auto_commit: true
+  
+  # DHF风格配置测试
+  audio.volume_up: "APP_MSG_VOL_UP"
+  audio.volume_down: "APP_MSG_VOL_DOWN"
+  led.power_on: "LED_BLUE_ON"
+  led.power_off: "LED_OFF"

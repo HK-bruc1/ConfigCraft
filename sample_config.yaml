@@ -1,0 +1,69 @@
+schema_version: "1.0"
+values:
+  # 基础配置
+  basic.ic_model: 0
+  basic.vm_operation: "erase"
+  basic.pa_control: true
+  basic.low_power_warn_time: 600000
+  
+  # 通话场景按键配置
+  key_actions.call_scenario.active_click: "APP_MSG_NULL"
+  key_actions.call_scenario.active_double_click: "APP_MSG_CALL_ANSWER"
+  key_actions.call_scenario.active_long: "APP_MSG_NULL"
+  key_actions.call_scenario.incoming_click: "APP_MSG_NULL"
+  key_actions.call_scenario.incoming_double_click: "APP_MSG_CALL_ANSWER"
+  key_actions.call_scenario.incoming_triple_click: "APP_MSG_NULL"
+  key_actions.call_scenario.incoming_long: "APP_MSG_CALL_HANGUP"
+  key_actions.call_scenario.outgoing_click: "APP_MSG_NULL"
+  key_actions.call_scenario.siri_click: "APP_MSG_NULL"
+  key_actions.call_scenario.siri_double_click: "APP_MSG_NULL"
+  
+  # 音乐场景按键配置 - TWS连接状态
+  key_actions.music_scenario.tws_connected_phone_connected_click_r: "APP_MSG_VOL_UP"
+  key_actions.music_scenario.tws_connected_phone_connected_click_l: "APP_MSG_VOL_DOWN"
+  key_actions.music_scenario.tws_connected_phone_connected_double_click_r: "APP_MSG_MUSIC_PP"
+  key_actions.music_scenario.tws_connected_phone_connected_double_click_l: "APP_MSG_MUSIC_PP"
+  key_actions.music_scenario.tws_connected_phone_connected_triple_click_r: "APP_MSG_MUSIC_NEXT"
+  key_actions.music_scenario.tws_connected_phone_connected_triple_click_l: "APP_MSG_MUSIC_PREV"
+  key_actions.music_scenario.tws_connected_phone_connected_long_r: "APP_MSG_OPEN_SIRI"
+  key_actions.music_scenario.tws_connected_phone_connected_long_l: "APP_MSG_OPEN_SIRI"
+  
+  # 音乐场景按键配置 - TWS未连接状态
+  key_actions.music_scenario.tws_disconnected_phone_connected_click_r: "APP_MSG_VOL_UP"
+  key_actions.music_scenario.tws_disconnected_phone_connected_click_l: "APP_MSG_VOL_DOWN"
+  key_actions.music_scenario.tws_disconnected_phone_connected_double_click_r: "APP_MSG_MUSIC_PP"
+  key_actions.music_scenario.tws_disconnected_phone_connected_double_click_l: "APP_MSG_MUSIC_PP"
+  key_actions.music_scenario.tws_disconnected_phone_connected_triple_click_r: "APP_MSG_MUSIC_NEXT"
+  key_actions.music_scenario.tws_disconnected_phone_connected_triple_click_l: "APP_MSG_MUSIC_PREV"
+  key_actions.music_scenario.tws_disconnected_phone_connected_long_r: "APP_MSG_OPEN_SIRI"
+  key_actions.music_scenario.tws_disconnected_phone_connected_long_l: "APP_MSG_OPEN_SIRI"
+  
+  # LED配置 - 连接状态指示
+  led_config.connection_status.bluetooth_connected: "LED_BLUE_ON"
+  led_config.connection_status.bluetooth_disconnected: "LED_RED_SLOW"
+  led_config.connection_status.tws_connected: "LED_GREEN_ON"
+  led_config.connection_status.tws_disconnected: "LED_ORANGE_SLOW"
+  led_config.connection_status.pairing_mode: "LED_BLUE_FAST"
+  
+  # LED配置 - 系统事件指示
+  led_config.system_events.low_battery: "LED_RED_FLASH"
+  led_config.system_events.charging: "LED_RED_ON"
+  led_config.system_events.charge_complete: "LED_GREEN_ON"
+  led_config.system_events.power_on: "LED_BLUE_ON"
+  led_config.system_events.power_off: "LED_OFF"
+  
+  # LED配置 - 通话状态指示
+  led_config.call_events.incoming_call: "LED_BLUE_FAST"
+  led_config.call_events.active_call: "LED_BLUE_ON"
+  led_config.call_events.call_end: "LED_OFF"
+  
+  # 工厂设置
+  factory.reset_mode: "FACTORY_RESET_ALL"
+  factory.dut_mode_enable: false
+  factory.test_mode_timeout: 30
+  
+  # 高级设置
+  advanced.three_call_enable: true
+  advanced.auto_power_on: true
+  advanced.low_latency_mode: false
+  advanced.noise_cancellation: true
