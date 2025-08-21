@@ -86,8 +86,15 @@ sections:
 
 ### Known Issues to Address
 - ✅ ~~Chinese character display in GUI~~ **FIXED** - Using FYNE_FONT environment variable with simhei.ttf
+- ✅ ~~Tree widget flickering and position drift~~ **FIXED** - Custom tree implementation replaces problematic Fyne Tree
 - Missing conf-to-YAML import functionality  
 - No configuration validation/error checking
+
+### Tree Widget Solution (v0.3.1)
+- **Problem**: Fyne Tree widget caused flickering and position drift during expand/collapse
+- **Root Cause**: Fyne Tree's internal refresh mechanism rebuilds entire node structure
+- **Solution**: Custom tree implementation using VBox container and dynamic rendering
+- **Benefits**: Smooth animations, no flickering, better performance, elegant design
 
 ### Chinese Font Support Solution
 - **Environment Variable**: `FYNE_FONT=C:\Windows\Fonts\simhei.ttf`
