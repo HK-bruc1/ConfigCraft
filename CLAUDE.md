@@ -87,8 +87,15 @@ sections:
 ### Known Issues to Address
 - ✅ ~~Chinese character display in GUI~~ **FIXED** - Using FYNE_FONT environment variable with simhei.ttf
 - ✅ ~~Tree widget flickering and position drift~~ **FIXED** - Custom tree implementation replaces problematic Fyne Tree
+- ✅ ~~Configuration groups random positioning~~ **FIXED** - Unified sorting logic with priority ordering
 - Missing conf-to-YAML import functionality  
 - No configuration validation/error checking
+
+### Configuration Group Order Fix (v0.3.2)
+- **Problem**: Configuration groups appear in random positions each time the same YAML file is loaded
+- **Root Cause**: Go map iteration is random, causing inconsistent UI rendering across three key locations
+- **Solution**: Unified sorting logic in parser.go, app.go, and tree.go with priority-based ordering
+- **Benefits**: Stable, predictable group positioning with logical priority sequence (basic → key_actions → led_config → factory → advanced)
 
 ### Tree Widget Solution (v0.3.1)
 - **Problem**: Fyne Tree widget caused flickering and position drift during expand/collapse

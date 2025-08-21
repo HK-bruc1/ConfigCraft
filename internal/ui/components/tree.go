@@ -2,6 +2,7 @@ package components
 
 import (
 	"dhf-config-manager/internal/models"
+	"sort"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -81,8 +82,35 @@ func (ct *ConfigTree) rebuildTree() {
 	}
 	ct.nodes["root"] = rootNode
 	
-	// 为每个section创建节点
-	for sectionKey, section := range ct.schema.Sections {
+	// 为每个section创建节点 - 按固定顺序遍历以确保界面一致性
+	sectionKeys := make([]string, 0, len(ct.schema.Sections))
+	for sectionKey := range ct.schema.Sections {
+		sectionKeys = append(sectionKeys, sectionKey)
+	}
+	// 使用与app.go相同的排序逻辑
+	sectionOrder := map[string]int{
+		"basic":      1,
+		"key_actions": 2,
+		"led_config": 3,
+		"factory":    4,
+		"advanced":   5,
+	}
+	sort.Slice(sectionKeys, func(i, j int) bool {
+		orderI, existsI := sectionOrder[sectionKeys[i]]
+		orderJ, existsJ := sectionOrder[sectionKeys[j]]
+		
+		if existsI && existsJ {
+			return orderI < orderJ
+		} else if existsI {
+			return true
+		} else if existsJ {
+			return false
+		}
+		return sectionKeys[i] < sectionKeys[j]
+	})
+	
+	for _, sectionKey := range sectionKeys {
+		section := ct.schema.Sections[sectionKey]
 		sectionNode := &TreeNode{
 			id:         sectionKey,
 			name:       section.Name,
@@ -94,8 +122,15 @@ func (ct *ConfigTree) rebuildTree() {
 		ct.nodes[sectionKey] = sectionNode
 		rootNode.children = append(rootNode.children, sectionNode)
 		
-		// 为每个group创建子节点
-		for groupKey, group := range section.Groups {
+		// 为每个group创建子节点 - 按固定顺序遍历
+		groupKeys := make([]string, 0, len(section.Groups))
+		for groupKey := range section.Groups {
+			groupKeys = append(groupKeys, groupKey)
+		}
+		sort.Strings(groupKeys) // 按字典序排序
+		
+		for _, groupKey := range groupKeys {
+			group := section.Groups[groupKey]
 			groupID := sectionKey + "." + groupKey
 			groupNode := &TreeNode{
 				id:         groupID,
