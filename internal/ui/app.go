@@ -65,8 +65,9 @@ func (a *App) Initialize() error {
 }
 
 func (a *App) setupLayout() {
-	// 设置toolbar的window引用
+	// 设置toolbar和editor的window引用
 	a.toolbar.SetWindow(a.window)
+	a.editor.SetWindow(a.window)
 	
 	// 左侧区域：配置分组导航
 	leftPanel := container.NewBorder(
@@ -154,11 +155,58 @@ func (a *App) Run() {
 	a.window.ShowAndRun()
 }
 
-// openConfigFile 打开YAML配置文件 - 通用版本，无需固定schema
+// openConfigFile 打开YAML配置文件 - 支持schema和配置文件
 func (a *App) openConfigFile(filePath string) {
 	log.Printf("Opening config file: %s", filePath)
 	
-	// 直接加载用户配置，无需预设schema
+	// 尝试作为schema文件加载
+	if err := a.parser.LoadSchema(filePath); err == nil {
+		log.Printf("Loaded as schema file")
+		// 成功加载为schema文件
+		a.schema = a.parser.GetSchema()
+		a.userConfig = &models.UserConfig{Values: make(map[string]interface{})}
+		a.currentFilePath = ""  // schema文件不是配置文件
+		a.editor.SetSchema(a.schema)
+		a.editor.SetConfig(a.userConfig)
+		
+		// 刷新界面
+		a.refreshTree()
+		
+		// 自动选择第一个section
+		if len(a.schema.Sections) > 0 {
+			sectionKeys := make([]string, 0, len(a.schema.Sections))
+			for sectionKey := range a.schema.Sections {
+				sectionKeys = append(sectionKeys, sectionKey)
+			}
+			// 使用相同的排序逻辑
+			sectionOrder := map[string]int{
+				"basic": 1, "call_actions": 2, "music_actions": 3, "led_config": 4, "special_functions": 5, "advanced": 6,
+			}
+			sort.Slice(sectionKeys, func(i, j int) bool {
+				orderI, existsI := sectionOrder[sectionKeys[i]]
+				orderJ, existsJ := sectionOrder[sectionKeys[j]]
+				if existsI && existsJ {
+					return orderI < orderJ
+				} else if existsI {
+					return true
+				} else if existsJ {
+					return false
+				}
+				return sectionKeys[i] < sectionKeys[j]
+			})
+			
+			a.editor.ShowSection(sectionKeys[0])
+		}
+		
+		// 显示成功消息
+		message := fmt.Sprintf("Schema文件已成功加载！\n\n文件路径: %s\n配置分组数: %d\n支持增强功能: 描述信息、提示、可编辑下拉框", 
+			filePath, len(a.schema.Sections))
+		dialog.ShowInformation("Schema加载成功", message, a.window)
+		log.Printf("Successfully loaded schema with %d sections", len(a.schema.Sections))
+		return
+	}
+	
+	// 作为用户配置文件加载
 	userConfig, err := a.parser.LoadUserConfig(filePath)
 	if err != nil {
 		dialog.ShowError(fmt.Errorf("无法加载配置文件: %v", err), a.window)

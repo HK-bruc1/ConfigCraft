@@ -4,7 +4,7 @@ values:
     advanced.noise_cancellation: true
     advanced.three_call_enable: true
     basic.ic_model: 0
-    basic.low_power_warn_time: 600000
+    basic.low_power_warn_time: 300000
     basic.pa_control: true
     basic.vm_operation: erase
     factory.dut_mode_enable: false

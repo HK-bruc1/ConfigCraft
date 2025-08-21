@@ -88,8 +88,21 @@ sections:
 - ✅ ~~Chinese character display in GUI~~ **FIXED** - Using FYNE_FONT environment variable with simhei.ttf
 - ✅ ~~Tree widget flickering and position drift~~ **FIXED** - Custom tree implementation replaces problematic Fyne Tree
 - ✅ ~~Configuration groups random positioning~~ **FIXED** - Unified sorting logic with priority ordering
+- ✅ ~~Configuration editor layout chaos~~ **FIXED** - Individual card design with clear visual hierarchy
 - Missing conf-to-YAML import functionality  
 - No configuration validation/error checking
+
+### Configuration Editor UI Revolution (v0.3.3)
+- **Problem**: Right-side configuration editor had chaotic layout with unclear item boundaries
+- **Root Cause**: Multiple configuration items mixed in single cards without proper visual separation
+- **Solution**: Individual card design for each configuration item with unified visual hierarchy
+- **Benefits**: Clear visual separation, consistent interaction patterns, professional appearance
+
+### Enhanced Schema Support (v0.3.3)
+- **New Field Type**: `combo` - Editable dropdown combining preset selection with manual input
+- **New Attributes**: `description`, `tooltip`, `placeholder` for comprehensive user guidance
+- **Smart Detection**: Automatic recognition of schema files vs configuration files
+- **Backwards Compatible**: Existing configuration files continue to work with dynamic schema generation
 
 ### Configuration Group Order Fix (v0.3.2)
 - **Problem**: Configuration groups appear in random positions each time the same YAML file is loaded

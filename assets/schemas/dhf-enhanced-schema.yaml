@@ -1,0 +1,430 @@
+schema_version: "1.1"
+display_name: "DHF耳机配置增强版"
+
+sections:
+  basic:
+    name: "基础配置"
+    icon: "settings"
+    fields:
+      ic_model:
+        type: "combo"
+        label: "IC型号"
+        description: "选择目标芯片型号，不同型号的功能支持略有差异"
+        tooltip: "AC7106A8支持更多LED灯效模式，AC7103D4功耗更低但功能稍简化"
+        placeholder: "请选择或输入IC型号代码"
+        options:
+          - {value: 0, label: "AC7106A8 (推荐)"}
+          - {value: 1, label: "AC7103D4 (低功耗版)"}
+        default: 0
+        required: true
+      
+      vm_operation:
+        type: "select"
+        label: "VM区域更新操作"
+        description: "虚拟机区域在固件更新时的处理方式"
+        tooltip: "擦除模式会清空用户数据但确保更新成功，保持模式可能在某些情况下导致更新失败"
+        options:
+          - {value: 0, label: "擦除 (推荐)"}
+          - {value: 1, label: "保持"}
+        default: 0
+      
+      low_power_warn_time:
+        type: "number"
+        label: "低电提醒时间"
+        description: "触发低电量警告的时间阈值，单位：毫秒"
+        tooltip: "设置过小可能导致频繁提醒影响用户体验，设置过大可能导致意外关机"
+        placeholder: "600000"
+        default: 600000
+        min: 60000
+        max: 3600000
+      
+      dac_pa_enable:
+        type: "boolean"
+        label: "手动开启功放"
+        description: "是否在蓝牙初始化后手动开启功放"
+        tooltip: "某些硬件版本需要手动开启功放才能正常输出音频"
+        default: true
+
+  call_actions:
+    name: "通话按键配置"
+    icon: "phone"
+    groups:
+      active_call:
+        name: "通话中按键"
+        fields:
+          single_click:
+            type: "combo"
+            label: "单击动作"
+            description: "通话进行时单击按键的操作"
+            tooltip: "设置为NULL表示不执行任何操作，避免误触"
+            placeholder: "APP_MSG_NULL"
+            options:
+              - {value: "APP_MSG_NULL", label: "无操作"}
+              - {value: "APP_MSG_CALL_ANSWER", label: "接听"}
+              - {value: "APP_MSG_CALL_HANGUP", label: "挂断"}
+              - {value: "APP_MSG_VOL_UP", label: "音量+"}
+              - {value: "APP_MSG_VOL_DOWN", label: "音量-"}
+            default: "APP_MSG_NULL"
+          
+          double_click:
+            type: "combo"
+            label: "双击动作"
+            description: "通话进行时双击按键的操作"
+            placeholder: "APP_MSG_CALL_ANSWER"
+            options:
+              - {value: "APP_MSG_NULL", label: "无操作"}
+              - {value: "APP_MSG_CALL_ANSWER", label: "接听"}
+              - {value: "APP_MSG_CALL_HANGUP", label: "挂断"}
+            default: "APP_MSG_CALL_ANSWER"
+          
+          long_press:
+            type: "combo"
+            label: "长按动作"
+            description: "通话进行时长按按键的操作"
+            placeholder: "APP_MSG_NULL"
+            options:
+              - {value: "APP_MSG_NULL", label: "无操作"}
+              - {value: "APP_MSG_CALL_HANGUP", label: "挂断"}
+            default: "APP_MSG_NULL"
+      
+      incoming_call:
+        name: "来电按键"
+        fields:
+          single_click:
+            type: "combo"
+            label: "来电单击"
+            description: "收到来电时单击按键的操作"
+            tooltip: "通常设置为接听或无操作，避免误接"
+            placeholder: "APP_MSG_NULL"
+            options:
+              - {value: "APP_MSG_NULL", label: "无操作"}
+              - {value: "APP_MSG_CALL_ANSWER", label: "接听"}
+              - {value: "APP_MSG_CALL_HANGUP", label: "拒接"}
+            default: "APP_MSG_NULL"
+          
+          double_click:
+            type: "combo"
+            label: "来电双击"
+            description: "收到来电时双击按键的操作"
+            placeholder: "APP_MSG_CALL_ANSWER"
+            options:
+              - {value: "APP_MSG_CALL_ANSWER", label: "接听"}
+              - {value: "APP_MSG_CALL_HANGUP", label: "拒接"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_CALL_ANSWER"
+          
+          long_press:
+            type: "combo"
+            label: "来电长按"
+            description: "收到来电时长按按键的操作"
+            tooltip: "长按拒接是常见设置，可避免误操作"
+            placeholder: "APP_MSG_CALL_HANGUP"
+            options:
+              - {value: "APP_MSG_CALL_HANGUP", label: "拒接"}
+              - {value: "APP_MSG_CALL_ANSWER", label: "接听"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_CALL_HANGUP"
+
+  music_actions:
+    name: "音乐按键配置"
+    icon: "music"
+    groups:
+      tws_connected:
+        name: "TWS连接状态"
+        fields:
+          right_single_click:
+            type: "combo"
+            label: "右耳单击"
+            description: "TWS连接且手机已连接时，右耳单击操作"
+            tooltip: "通常设置为音量+，便于区分左右耳功能"
+            placeholder: "APP_MSG_VOL_UP"
+            options:
+              - {value: "APP_MSG_VOL_UP", label: "音量+"}
+              - {value: "APP_MSG_VOL_DOWN", label: "音量-"}
+              - {value: "APP_MSG_MUSIC_PP", label: "播放/暂停"}
+              - {value: "APP_MSG_MUSIC_NEXT", label: "下一首"}
+              - {value: "APP_MSG_MUSIC_PREV", label: "上一首"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_VOL_UP"
+          
+          left_single_click:
+            type: "combo"
+            label: "左耳单击"
+            description: "TWS连接且手机已连接时，左耳单击操作"
+            tooltip: "通常设置为音量-，与右耳形成对称功能"
+            placeholder: "APP_MSG_VOL_DOWN"
+            options:
+              - {value: "APP_MSG_VOL_DOWN", label: "音量-"}
+              - {value: "APP_MSG_VOL_UP", label: "音量+"}
+              - {value: "APP_MSG_MUSIC_PP", label: "播放/暂停"}
+              - {value: "APP_MSG_MUSIC_NEXT", label: "下一首"}
+              - {value: "APP_MSG_MUSIC_PREV", label: "上一首"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_VOL_DOWN"
+          
+          right_double_click:
+            type: "combo"
+            label: "右耳双击"
+            description: "TWS连接且手机已连接时，右耳双击操作"
+            placeholder: "APP_MSG_MUSIC_PP"
+            options:
+              - {value: "APP_MSG_MUSIC_PP", label: "播放/暂停"}
+              - {value: "APP_MSG_MUSIC_NEXT", label: "下一首"}
+              - {value: "APP_MSG_MUSIC_PREV", label: "上一首"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_MUSIC_PP"
+          
+          left_double_click:
+            type: "combo"
+            label: "左耳双击"
+            description: "TWS连接且手机已连接时，左耳双击操作"
+            placeholder: "APP_MSG_MUSIC_PP"
+            options:
+              - {value: "APP_MSG_MUSIC_PP", label: "播放/暂停"}
+              - {value: "APP_MSG_MUSIC_NEXT", label: "下一首"}
+              - {value: "APP_MSG_MUSIC_PREV", label: "上一首"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_MUSIC_PP"
+          
+          right_long_press:
+            type: "combo"
+            label: "右耳长按"
+            description: "TWS连接且手机已连接时，右耳长按操作"
+            tooltip: "语音助手是长按的经典功能，建议保持默认"
+            placeholder: "APP_MSG_OPEN_SIRI"
+            options:
+              - {value: "APP_MSG_OPEN_SIRI", label: "打开语音助手"}
+              - {value: "APP_MSG_MUSIC_PP", label: "播放/暂停"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_OPEN_SIRI"
+          
+          left_long_press:
+            type: "combo"
+            label: "左耳长按"
+            description: "TWS连接且手机已连接时，左耳长按操作"
+            placeholder: "APP_MSG_OPEN_SIRI"
+            options:
+              - {value: "APP_MSG_OPEN_SIRI", label: "打开语音助手"}
+              - {value: "APP_MSG_MUSIC_PP", label: "播放/暂停"}
+              - {value: "APP_MSG_NULL", label: "无操作"}
+            default: "APP_MSG_OPEN_SIRI"
+
+  led_config:
+    name: "LED灯效配置"
+    icon: "lightbulb"
+    groups:
+      tws_status:
+        name: "TWS连接状态灯效"
+        fields:
+          connected:
+            type: "combo"
+            label: "TWS连接成功"
+            description: "TWS对耳连接成功时的灯效"
+            tooltip: "蓝色常亮表示连接稳定，避免使用闪烁以免干扰用户"
+            placeholder: "LED_STA_BLUE_ON"
+            options:
+              - {value: "LED_STA_BLUE_ON", label: "蓝灯常亮"}
+              - {value: "LED_STA_BLUE_FAST_FLASH", label: "蓝灯快闪"}
+              - {value: "LED_STA_BLUE_SLOW_FLASH", label: "蓝灯慢闪"}
+              - {value: "LED_STA_ALL_OFF", label: "关闭"}
+            default: "LED_STA_BLUE_ON"
+          
+          disconnected:
+            type: "combo"
+            label: "TWS连接断开"
+            description: "TWS对耳连接断开时的灯效"
+            tooltip: "红色常亮提醒用户连接异常，便于快速识别问题"
+            placeholder: "LED_STA_RED_ON"
+            options:
+              - {value: "LED_STA_RED_ON", label: "红灯常亮"}
+              - {value: "LED_STA_RED_FAST_FLASH", label: "红灯快闪"}
+              - {value: "LED_STA_RED_SLOW_FLASH", label: "红灯慢闪"}
+              - {value: "LED_STA_ALL_OFF", label: "关闭"}
+            default: "LED_STA_RED_ON"
+      
+      bluetooth_status:
+        name: "蓝牙连接状态灯效"
+        fields:
+          connected:
+            type: "combo"
+            label: "蓝牙已连接"
+            description: "与手机蓝牙连接成功时的灯效"
+            tooltip: "连接成功后通常关闭灯效以节省电量"
+            placeholder: "LED_STA_ALL_OFF"
+            options:
+              - {value: "LED_STA_ALL_OFF", label: "关闭 (推荐)"}
+              - {value: "LED_STA_BLUE_ON", label: "蓝灯常亮"}
+              - {value: "LED_STA_GREEN_ON", label: "绿灯常亮"}
+              - {value: "LED_STA_BLUE_SLOW_FLASH", label: "蓝灯慢闪"}
+            default: "LED_STA_ALL_OFF"
+          
+          disconnected:
+            type: "combo"
+            label: "蓝牙未连接"
+            description: "与手机蓝牙断开连接时的灯效"
+            tooltip: "通常使用慢闪提醒用户处于配对状态"
+            placeholder: "LED_STA_BLUE_FLASH_1TIMES_PER_5S"
+            options:
+              - {value: "LED_STA_BLUE_FLASH_1TIMES_PER_5S", label: "蓝灯5秒1次"}
+              - {value: "LED_STA_BLUE_SLOW_FLASH", label: "蓝灯慢闪"}
+              - {value: "LED_STA_RED_ON", label: "红灯常亮"}
+              - {value: "LED_STA_ALL_OFF", label: "关闭"}
+            default: "LED_STA_BLUE_FLASH_1TIMES_PER_5S"
+      
+      system_events:
+        name: "系统事件灯效"
+        fields:
+          power_on:
+            type: "combo"
+            label: "开机灯效"
+            description: "设备开机时播放的灯效"
+            tooltip: "红蓝交替闪烁是经典的开机提示，用户体验良好"
+            placeholder: "LED_STA_RED_BLUE_SLOW_FLASH_ALTERNATELY"
+            options:
+              - {value: "LED_STA_RED_BLUE_SLOW_FLASH_ALTERNATELY", label: "红蓝交替闪烁"}
+              - {value: "LED_STA_BLUE_FLASH_3TIMES", label: "蓝灯闪3次"}
+              - {value: "LED_STA_GREEN_FLASH_3TIMES", label: "绿灯闪3次"}
+              - {value: "LED_STA_ALL_OFF", label: "无灯效"}
+            default: "LED_STA_RED_BLUE_SLOW_FLASH_ALTERNATELY"
+          
+          power_off:
+            type: "combo"
+            label: "关机灯效"
+            description: "设备关机时播放的灯效"
+            tooltip: "红灯闪3次是常见的关机提示，简洁明了"
+            placeholder: "LED_STA_RED_FLASH_3TIMES"
+            options:
+              - {value: "LED_STA_RED_FLASH_3TIMES", label: "红灯闪3次"}
+              - {value: "LED_STA_BLUE_FLASH_3TIMES", label: "蓝灯闪3次"}
+              - {value: "LED_STA_ALL_OFF", label: "无灯效"}
+            default: "LED_STA_RED_FLASH_3TIMES"
+          
+          low_power:
+            type: "combo"
+            label: "低电量提醒"
+            description: "电量低时的灯效提醒"
+            tooltip: "使用较长间隔的闪烁避免过度耗电"
+            placeholder: "LED_STA_BLUE_FLASH_1TIMES_PER_14S"
+            options:
+              - {value: "LED_STA_BLUE_FLASH_1TIMES_PER_14S", label: "蓝灯14秒1次"}
+              - {value: "LED_STA_RED_FLASH_1TIMES_PER_14S", label: "红灯14秒1次"}
+              - {value: "LED_STA_RED_SLOW_FLASH", label: "红灯慢闪"}
+              - {value: "LED_STA_ALL_OFF", label: "关闭"}
+            default: "LED_STA_BLUE_FLASH_1TIMES_PER_14S"
+      
+      charging_status:
+        name: "充电状态灯效"
+        fields:
+          charging:
+            type: "combo"
+            label: "充电中"
+            description: "正在充电时的灯效"
+            tooltip: "红灯常亮是充电的标准提示色"
+            placeholder: "LED_STA_RED_ON"
+            options:
+              - {value: "LED_STA_RED_ON", label: "红灯常亮"}
+              - {value: "LED_STA_RED_SLOW_FLASH", label: "红灯慢闪"}
+              - {value: "LED_STA_ORANGE_ON", label: "橙灯常亮"}
+              - {value: "LED_STA_ALL_OFF", label: "关闭"}
+            default: "LED_STA_RED_ON"
+          
+          charge_full:
+            type: "combo"
+            label: "充电完成"
+            description: "电池充满时的灯效"
+            tooltip: "充满电后通常关闭灯效以节省电量"
+            placeholder: "LED_STA_ALL_OFF"
+            options:
+              - {value: "LED_STA_ALL_OFF", label: "关闭"}
+              - {value: "LED_STA_GREEN_ON", label: "绿灯常亮"}
+              - {value: "LED_STA_BLUE_ON", label: "蓝灯常亮"}
+              - {value: "LED_STA_GREEN_FLASH_3TIMES", label: "绿灯闪3次"}
+            default: "LED_STA_ALL_OFF"
+
+  special_functions:
+    name: "特殊功能配置"
+    icon: "gear"
+    groups:
+      factory_reset:
+        name: "恢复出厂设置"
+        fields:
+          enable_led:
+            type: "boolean"
+            label: "启用灯效提示"
+            description: "恢复出厂设置时是否显示灯效"
+            tooltip: "建议启用灯效以向用户确认操作正在执行"
+            default: true
+          
+          led_effect:
+            type: "combo"
+            label: "恢复出厂灯效"
+            description: "恢复出厂设置时显示的灯效"
+            tooltip: "蓝灯快闪10次提供明确的视觉反馈"
+            placeholder: "LED_STA_BLUE_FAST_FLASH_10TIMES"
+            options:
+              - {value: "LED_STA_BLUE_FAST_FLASH_10TIMES", label: "蓝灯快闪10次"}
+              - {value: "LED_STA_RED_FAST_FLASH_10TIMES", label: "红灯快闪10次"}
+              - {value: "LED_STA_RED_BLUE_FAST_FLASH_ALTERNATELY", label: "红蓝交替快闪"}
+            default: "LED_STA_BLUE_FAST_FLASH_10TIMES"
+          
+          clear_tws_pairing:
+            type: "boolean"
+            label: "清除TWS配对"
+            description: "恢复出厂设置时是否清除TWS对耳配对信息"
+            tooltip: "通常不建议清除TWS配对，避免用户重新配对的麻烦"
+            default: false
+      
+      dut_mode:
+        name: "DUT测试模式"
+        fields:
+          led_effect:
+            type: "combo"
+            label: "DUT模式灯效"
+            description: "进入DUT测试模式时的灯效"
+            tooltip: "蓝灯常亮表示已进入测试模式"
+            placeholder: "LED_STA_BLUE_ON"
+            options:
+              - {value: "LED_STA_BLUE_ON", label: "蓝灯常亮"}
+              - {value: "LED_STA_GREEN_ON", label: "绿灯常亮"}
+              - {value: "LED_STA_BLUE_FAST_FLASH", label: "蓝灯快闪"}
+              - {value: "LED_STA_ALL_OFF", label: "无灯效"}
+            default: "LED_STA_BLUE_ON"
+
+  advanced:
+    name: "高级设置"
+    icon: "settings-2"
+    fields:
+      three_way_call:
+        type: "boolean"
+        label: "启用三方通话"
+        description: "是否支持三方通话功能的按键操作"
+        tooltip: "启用后可在通话中接听第二路来电，进行会议通话"
+        default: true
+      
+      two_io_led:
+        type: "boolean"
+        label: "双IO双LED模式"
+        description: "是否启用双IO推LED的硬件模式"
+        tooltip: "某些硬件设计需要使用双IO才能驱动LED正常工作"
+        default: true
+      
+      factory_reset_timeout:
+        type: "number"
+        label: "恢复出厂超时"
+        description: "恢复出厂设置的超时计数，单位：200ms"
+        tooltip: "数值越大，灯效持续时间越长。建议保持默认值25（即5秒）"
+        placeholder: "25"
+        default: 25
+        min: 10
+        max: 100
+      
+      soft_poweroff_mode:
+        type: "combo"
+        label: "软关机模式"
+        description: "恢复出厂后的关机方式"
+        tooltip: "无提示音关机可避免干扰，但带提示音关机用户体验更好"
+        placeholder: "2"
+        options:
+          - {value: 1, label: "带提示音同步关机"}
+          - {value: 2, label: "无提示音同步关机 (推荐)"}
+        default: 2
