@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+	"sort"
 	"strings"
 	
 	"dhf-config-manager/internal/config"
@@ -269,8 +270,36 @@ func (a *App) generateSchemaFromConfig(userConfig *models.UserConfig) *models.Sc
 		sectionGroups[sectionKey][fieldKey] = value
 	}
 	
-	// 为每个section创建配置
-	for sectionKey, fields := range sectionGroups {
+	// 为每个section创建配置 - 按固定顺序遍历以确保界面显示一致
+	sectionKeys := make([]string, 0, len(sectionGroups))
+	for sectionKey := range sectionGroups {
+		sectionKeys = append(sectionKeys, sectionKey)
+	}
+	// 定义section的显示顺序优先级
+	sectionOrder := map[string]int{
+		"basic":      1,
+		"key_actions": 2,
+		"led_config": 3,
+		"factory":    4,
+		"advanced":   5,
+	}
+	// 按优先级和字典序排序
+	sort.Slice(sectionKeys, func(i, j int) bool {
+		orderI, existsI := sectionOrder[sectionKeys[i]]
+		orderJ, existsJ := sectionOrder[sectionKeys[j]]
+		
+		if existsI && existsJ {
+			return orderI < orderJ
+		} else if existsI {
+			return true // 有优先级的排在前面
+		} else if existsJ {
+			return false
+		}
+		return sectionKeys[i] < sectionKeys[j] // 都没有优先级时按字典序
+	})
+	
+	for _, sectionKey := range sectionKeys {
+		fields := sectionGroups[sectionKey]
 		section := models.ConfigSection{
 			Name:   a.getSectionDisplayName(sectionKey),
 			Icon:   "settings",
@@ -278,8 +307,15 @@ func (a *App) generateSchemaFromConfig(userConfig *models.UserConfig) *models.Sc
 			Groups: make(map[string]models.ConfigGroup),
 		}
 		
-		// 处理字段
-		for fieldKey, value := range fields {
+		// 处理字段 - 按固定顺序遍历以确保字段显示一致
+		fieldKeys := make([]string, 0, len(fields))
+		for fieldKey := range fields {
+			fieldKeys = append(fieldKeys, fieldKey)
+		}
+		sort.Strings(fieldKeys) // 按字典序排序字段
+		
+		for _, fieldKey := range fieldKeys {
+			value := fields[fieldKey]
 			fieldParts := strings.Split(fieldKey, ".")
 			
 			if len(fieldParts) == 1 {

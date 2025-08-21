@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 	"time"
 
@@ -88,12 +87,12 @@ func (p *Parser) GenerateConfFile(config *models.UserConfig, filePath string) er
 	confLines = append(confLines, "#***************************************************************************")
 	confLines = append(confLines, "")
 
-	// 按section分组处理配置
+	// 按原始顺序处理配置（不排序以保持YAML文件中的顺序）
 	var allKeys []string
 	for key := range config.Values {
 		allKeys = append(allKeys, key)
 	}
-	sort.Strings(allKeys)
+	// 移除字母排序，保持原始顺序
 
 	currentSection := ""
 	for _, key := range allKeys {
