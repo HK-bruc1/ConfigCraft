@@ -1,219 +1,392 @@
-# ConfigCraft
+# ConfigCraft 🛠️
 
-通用配置管理可视化工具 - 将复杂配置文件通过图形界面进行可视化编辑。
+<div align="center">
 
-## 项目概述
+**Universal Visual Configuration Management Tool**  
+*Transform complex configuration files into user-friendly GUI interfaces*
 
-ConfigCraft 是一个轻量级的通用配置管理工具，支持将YAML配置转换为各种格式的配置文件，简化复杂的配置管理过程。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
+[![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](https://github.com/ConfigCraft/configcraft)
+[![Release](https://img.shields.io/github/v/release/ConfigCraft/configcraft)](https://github.com/ConfigCraft/configcraft/releases)
 
-### 技术栈
-- **语言**: Go 1.21+
-- **GUI框架**: Fyne v2.4.3 + zenity原生对话框
-- **配置格式**: YAML → 通用配置文件
-- **打包方式**: 单exe可执行文件
+[English](#english) | [中文](#chinese)
 
-## 已实现功能 ✅
+</div>
 
-### 核心架构
-- [x] 基于YAML schema的动态UI生成系统
-- [x] 模块化的代码架构 (MVC模式)
-- [x] 配置文件解析和生成引擎
-- [x] 跨平台Go应用框架
+## English
 
-### 用户界面
-- [x] 现代化GUI界面 (Fyne)
-- [x] 响应式布局 (左侧导航树 + 右侧编辑器)
-- [x] **原生文件对话框** (zenity) - 从当前目录开始选择文件
-- [x] 工具栏 (新建、打开、保存、导出)
-- [x] 状态栏显示
-- [x] 窗口大小自适应 (900x650默认尺寸)
+### 🚀 What is ConfigCraft?
 
-### 配置管理
-- [x] 完整的通用配置模型支持
-- [x] 基于schema的动态配置项生成
-- [x] 多种配置类型支持 (文本、数字、选项、布尔值等)
-- [x] 分组管理和层级结构
-- [x] 配置验证和默认值支持
-- [x] 智能字段类型检测
-- [x] 可扩展的配置schema系统
+ConfigCraft is a powerful, schema-driven configuration management tool that transforms complex YAML configurations into intuitive graphical interfaces. Originally developed for firmware configuration management, it has evolved into a universal solution suitable for any structured configuration workflow.
 
-### 文件操作
-- [x] 多种配置文件格式输出
-- [x] YAML用户配置保存/加载
-- [x] **智能文件类型识别** - 自动区分schema文件和配置文件
-- [x] **增强错误处理** - 精确的文件读取和解析错误信息
-- [x] 配置项验证和默认值支持
-- [x] 多种配置控件 (下拉框、复选框、数字输入)
+**Key Features:**
+- 📊 **Schema-Driven UI**: Automatically generates forms based on YAML schemas
+- 🎯 **Universal Support**: Works with any YAML-based configuration structure
+- 🖥️ **Native Experience**: Beautiful cross-platform GUI with native file dialogs
+- 🔄 **Dual Output**: Maintains YAML configs while generating custom output formats
+- ⚡ **Zero Learning Curve**: Intuitive interface requires no technical knowledge
+- 🎨 **Modern Design**: Clean, professional interface with intelligent status display
 
-### 命令行版本
-- [x] 完整功能的CLI版本 (`cmd-version.go`)
-- [x] 交互式配置界面
-- [x] 快速配置验证工具
+### 🏗️ Architecture
 
-## 待实现功能 🚧
-
-### 界面优化
-- [ ] 中文字符显示乱码问题修复
-- [ ] 自定义字体和主题支持
-- [ ] 图标和视觉设计优化
-- [ ] 键盘快捷键支持
-
-### 功能增强
-- [ ] 配置文件导入功能 (conf → YAML)
-- [ ] 配置模板系统
-- [ ] 配置项搜索功能
-- [ ] 撤销/重做操作
-- [ ] 配置验证和错误提示
-- [ ] 多配置文件对比功能
-
-### 用户体验
-- [ ] 多语言支持 (中文/英文)
-- [ ] 在线帮助文档
-- [ ] 配置向导模式
-- [ ] 最近使用的配置文件
-- [ ] 自动保存功能
-
-### 技术改进
-- [ ] 单元测试覆盖
-- [ ] 配置schema版本管理
-- [ ] 插件系统支持
-- [ ] 批量配置处理
-- [ ] 配置文件压缩
-
-## 快速开始
-
-### 环境要求
-- Go 1.21 或更高版本
-- Windows 10/11 
-- TDM-GCC 10.3.0 (用于CGO编译)
-
-### 编译运行
-
-```bash
-# 克隆项目
-git clone <repository-url>
-cd DHFConfigTool
-
-# 编译GUI版本 (推荐)
-build\build.bat
-
-# 或者手动编译
-go build -ldflags "-s -w -H windowsgui" -o build\configcraft.exe main.go
-
-# 直接运行GUI (开发模式)
-go run main.go
-
-# 运行CLI版本
-cd cmd && go run cli.go
+```mermaid
+graph LR
+    A[YAML Schema/Config] --> B[Parser Engine]
+    B --> C[Dynamic UI Generator] 
+    C --> D[Form Controls]
+    D --> E[Configuration Output]
+    
+    F[Tree Navigation] --> G[Configuration Editor]
+    G --> H[Smart Toolbar]
+    H --> I[Status Bar]
 ```
 
-### 使用方法
+**Core Components:**
+- **Dynamic UI Generation**: Creates form controls based on field types (`select`, `combo`, `number`, `boolean`, `text`)
+- **Schema Intelligence**: Auto-detects schema files vs. configuration files
+- **Custom Tree Control**: Eliminates GUI framework limitations with smooth navigation
+- **Native File Dialogs**: Windows-native file selection with proper path handling
+- **Smart Status Bar**: Shows current file path and version information
 
-1. **GUI版本**: 运行 `build\configcraft.exe`
-2. **命令行版本**: `cd cmd && go run cli.go`
-3. **配置编辑**: 左侧选择配置分组，右侧编辑具体参数
-4. **导出配置**: 点击保存按钮生成配置文件
+### 🎯 Use Cases
 
-## 项目结构
+- **Firmware Configuration**: Hardware parameter management with visual validation
+- **Application Settings**: Convert complex config files into user-friendly forms  
+- **DevOps Tools**: Simplify deployment configuration for non-technical users
+- **Configuration Templates**: Create reusable configuration patterns
+- **Multi-Format Output**: Generate various configuration formats from single source
+
+### 🚀 Quick Start
+
+#### Prerequisites
+- **Windows 10/11** (primary platform)
+- **Go 1.21+** (for building from source)
+- **TDM-GCC 10.3.0** (for CGO compilation)
+
+#### Installation
+
+**Option 1: Download Release**
+```bash
+# Download latest release from GitHub
+curl -LO https://github.com/ConfigCraft/configcraft/releases/latest/download/configcraft.exe
+```
+
+**Option 2: Build from Source**
+```bash
+# Clone repository
+git clone https://github.com/ConfigCraft/configcraft.git
+cd configcraft
+
+# Quick setup (recommended)
+make build
+
+# Or using provided script
+build\build.bat
+
+# Or build manually
+go build -ldflags "-s -w -H windowsgui" -o build\configcraft.exe main.go
+```
+
+#### Basic Usage
+
+1. **Launch Application**
+   ```bash
+   # Run GUI version
+   .\build\configcraft.exe
+   
+   # Or CLI version for automation
+   cd cmd && go run cli.go
+   ```
+
+2. **Load Configuration**
+   - Click "打开配置" to select a YAML file
+   - ConfigCraft auto-detects schema vs. configuration files
+   - Navigate sections using the left panel tree
+
+3. **Edit Settings**
+   - Select configuration groups from the tree navigation
+   - Modify values using generated form controls
+   - View real-time validation and help information
+
+4. **Save Results**
+   - Click "保存配置" to save changes
+   - Generates both YAML config and custom output format
+   - Files saved with consistent naming: `config.yaml` + `config.conf`
+
+### 📁 Project Structure
 
 ```
 configcraft/
-├── main.go                 # GUI应用程序入口
-├── go.mod                  # Go模块定义
-├── customer.conf           # 真实配置文件参考
-├── internal/               # 核心业务逻辑
-│   ├── config/            # 配置解析器和生成器
-│   ├── models/            # 数据模型和类型定义
-│   └── ui/                # 用户界面
-│       ├── app.go         # 主应用程序
-│       ├── theme.go       # 界面主题
-│       └── components/    # UI组件
-│           ├── tree.go    # 配置树组件
-│           ├── editor.go  # 配置编辑器
-│           └── toolbar.go # 工具栏组件
-├── assets/                # 静态资源
-│   └── schemas/           # YAML配置模板
-│       └── dhf-real-schema.yaml    # 配置schema示例
-├── build/                 # 构建相关
-│   └── build.bat          # Windows构建脚本
-├── cmd/                   # 命令行工具
-│   └── cli.go             # CLI版本
-├── README.md              # 项目说明
-├── CHANGELOG.md           # 版本更新日志
-└── .gitignore             # Git忽略文件
+├── internal/
+│   ├── version/           # Version management
+│   ├── config/           # Parser and generator engine  
+│   ├── models/           # Data structures and types
+│   └── ui/               # GUI components and logic
+│       └── components/   # Custom UI controls
+├── assets/schemas/       # Example schema files
+├── build/               # Build artifacts and scripts
+├── docs/                # Additional documentation
+├── cmd/                 # CLI version
+└── main.go              # Application entry point
 ```
 
-## 技术亮点
+### 🛠️ Configuration Schema Format
 
-- **零学习成本**: 图形化界面，无需了解复杂配置文件语法
-- **弹性扩展**: 基于YAML schema动态生成UI，易于添加新配置项
-- **高效输出**: 支持多种配置文件格式输出，无缝集成现有构建流程
-- **轻量快速**: 单exe文件，启动速度快 (约18MB)
+ConfigCraft uses YAML schemas to define configuration structure:
 
-## 贡献指南
+```yaml
+sections:
+  section_name:
+    name: "Display Name"
+    groups:
+      group_name:
+        name: "Group Display Name"
+        fields:
+          field_name:
+            type: "select"  # select, combo, number, boolean, text
+            label: "Field Label"
+            description: "Help text shown below field"
+            tooltip: "Detailed information in popup"
+            placeholder: "Input hint text"
+            options:
+              - value: "option1"
+                label: "Option 1"
+              - value: "option2" 
+                label: "Option 2"
+            default: "option1"
+            required: true
+```
 
-欢迎提交Issue和Pull Request来改进项目。
+**Supported Field Types:**
+- `select`: Dropdown with predefined options
+- `combo`: Editable dropdown (preset + custom input)
+- `number`: Numeric input with validation
+- `boolean`: Checkbox control
+- `text`: Free-form text entry
 
-### 开发环境设置
-1. 安装Go 1.21+
-2. 安装TDM-GCC编译器
-3. 克隆项目并安装依赖
-4. 运行测试确保环境正常
+### 🎨 Technical Highlights
 
-## 版本历史
+- **Custom Tree Navigation**: Solves Fyne framework tree flickering with VBox-based implementation
+- **Native File Dialogs**: Integrates zenity library for Windows-native file selection
+- **Intelligent Path Display**: Shows relative paths with smart truncation (max 2 levels)
+- **Version Synchronization**: Centralized version management across all UI elements
+- **Schema-Driven Architecture**: Zero-configuration UI generation from YAML definitions
+- **Cross-Platform Foundation**: Built with Go and Fyne for future platform expansion
 
-### v0.3.3 (2025-08-22)
-- ✅ 配置编辑器UI布局革命性改进
-- ✅ 实现combo可编辑下拉框控件
-- ✅ 完整的描述信息和帮助提示系统
-- ✅ 独立卡片设计，清晰的视觉分离
-- ✅ 智能schema和配置文件检测
+### 🔧 Development
 
-### v0.3.2 (2025-08-21)
-- ✅ 修复配置分组位置随机变化问题
-- ✅ 统一排序逻辑，确保界面显示一致性
-- ✅ 消除Go map遍历随机性的影响
-- ✅ 实现稳定的分组显示优先级
+#### Setting Up Development Environment
 
-### v0.3.1 (2025-08-21)
-- ✅ 彻底解决树形控件闪烁和位置漂移问题
-- ✅ 实现自定义树形控件，替换有问题的Fyne Tree
-- ✅ 采用简约箭头设计，提升界面优雅度
-- ✅ 优化布局间距，实现紧凑美观的视觉效果
-- ✅ 流畅的展开/收缩动画，无闪烁的用户体验
+```bash
+# Clone and setup
+git clone https://github.com/ConfigCraft/configcraft.git
+cd configcraft
 
-### v0.3.0 (2025-08-21)
-- ✅ 通用YAML配置支持，移除schema依赖
-- ✅ 智能界面生成系统
-- ✅ 智能保存逻辑，同时生成YAML和DHF conf文件
+# Install dependencies and setup
+make deps
 
-### v0.2.1 (2025-08-20)
-- ✅ 完全解决中文字体显示问题
-- ✅ 实现100%中文本地化界面
+# Run in development mode  
+make dev
 
-### v0.2.0 (2025-08-20)
-- ✅ 现代化GUI布局重大改进
-- ✅ 双面板设计和工具栏优化
+# Run tests
+make test
+```
 
-### v0.1.0 (2025-01-19)
-- ✅ 项目初始化和基础架构
-- ✅ GUI界面框架完成
-- ✅ 基于真实conf文件的完整配置支持
-- ✅ YAML schema驱动的动态UI系统
-- ✅ 标准DHF conf格式输出
-- ✅ 命令行版本实现
-- 🚧 中文显示问题待解决
+#### Key Development Guidelines
 
-## 许可证
+- **Version Updates**: Modify only `internal/version/version.go`
+- **UI Components**: Follow existing patterns in `internal/ui/components/`
+- **Configuration Logic**: Extend `internal/config/parser.go` for new formats
+- **Error Handling**: Provide meaningful error messages with context
+- **Documentation**: Update relevant docs for any API changes
 
-本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
+### 🤝 Contributing
 
-## 联系方式
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-- 项目地址: [GitHub Repository]
-- 问题反馈: [GitHub Issues]
-- 技术支持: [Email]
+**Quick Contribution Steps:**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)  
+5. Open a Pull Request
+
+**Areas Where Help is Needed:**
+- [ ] Cross-platform testing and support
+- [ ] Additional configuration format support
+- [ ] Performance optimization for large configs
+- [ ] Advanced validation features
+- [ ] Internationalization (i18n)
+
+### 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### 🙏 Acknowledgments
+
+- **Fyne Framework**: Cross-platform GUI development
+- **Zenity Library**: Native dialog integration
+- **Go Community**: Excellent tooling and ecosystem
+- **All Contributors**: Thank you for making ConfigCraft better!
 
 ---
 
-*ConfigCraft - 让配置管理变得简单* 🛠️
+## Chinese
+
+### 🚀 ConfigCraft 是什么？
+
+ConfigCraft 是一款强大的配置管理可视化工具，将复杂的YAML配置文件转换为直观的图形化界面。最初为固件配置管理而开发，现已演化为适用于任何结构化配置工作流程的通用解决方案。
+
+**核心特性：**
+- 📊 **Schema驱动界面**：根据YAML结构自动生成表单控件
+- 🎯 **通用支持**：适用于任何基于YAML的配置结构  
+- 🖥️ **原生体验**：精美的跨平台GUI界面，原生文件对话框
+- 🔄 **双重输出**：维护YAML配置的同时生成自定义格式文件
+- ⚡ **零学习成本**：直观界面无需技术背景
+- 🎨 **现代设计**：简洁专业的界面设计，智能状态显示
+
+### 🎯 应用场景
+
+- **固件配置管理**：硬件参数可视化配置与验证
+- **应用程序设置**：将复杂配置文件转换为用户友好的表单
+- **DevOps工具**：为非技术用户简化部署配置
+- **配置模板系统**：创建可重用的配置模式
+- **多格式输出**：从单一源文件生成多种配置格式
+
+### 🚀 快速开始
+
+#### 环境要求
+- **Windows 10/11**（主要平台）
+- **Go 1.21+**（从源码构建需要）
+- **TDM-GCC 10.3.0**（CGO编译需要）
+
+#### 安装方式
+
+**方式一：下载发布版本**
+```bash
+# 从GitHub下载最新版本
+curl -LO https://github.com/ConfigCraft/configcraft/releases/latest/download/configcraft.exe
+```
+
+**方式二：源码构建**
+```bash
+# 克隆仓库
+git clone https://github.com/ConfigCraft/configcraft.git
+cd configcraft
+
+# 快速构建（推荐）
+make build
+
+# 或使用构建脚本
+build\build.bat
+
+# 或手动构建
+go build -ldflags "-s -w -H windowsgui" -o build\configcraft.exe main.go
+```
+
+#### 基本使用
+
+1. **启动应用程序**
+   ```bash
+   # 运行GUI版本
+   .\build\configcraft.exe
+   
+   # 或运行CLI版本（用于自动化）
+   cd cmd && go run cli.go
+   ```
+
+2. **加载配置文件**
+   - 点击"打开配置"选择YAML文件
+   - ConfigCraft自动识别schema文件与配置文件
+   - 使用左侧树形导航浏览配置分组
+
+3. **编辑配置**
+   - 从树形导航选择配置分组
+   - 使用生成的表单控件修改数值
+   - 查看实时验证和帮助信息
+
+4. **保存结果**
+   - 点击"保存配置"保存更改
+   - 同时生成YAML配置文件和自定义输出格式
+   - 文件命名保持一致：`config.yaml` + `config.conf`
+
+### 🔧 开发指南
+
+#### 开发环境搭建
+
+```bash
+# 克隆并设置项目
+git clone https://github.com/ConfigCraft/configcraft.git
+cd configcraft
+
+# 安装依赖和设置
+make deps
+
+# 开发模式运行
+make dev
+
+# 运行测试
+make test
+```
+
+#### 关键开发准则
+
+- **版本更新**：仅修改 `internal/version/version.go`
+- **UI组件**：遵循 `internal/ui/components/` 中的现有模式
+- **配置逻辑**：在 `internal/config/parser.go` 中扩展新格式支持
+- **错误处理**：提供有意义的错误信息和上下文
+- **文档维护**：为任何API更改更新相关文档
+
+### 🤝 参与贡献
+
+我们欢迎贡献！请查看我们的[贡献指南](CONTRIBUTING.md)了解详情。
+
+**贡献步骤：**
+1. Fork 仓库
+2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
+3. 提交更改 (`git commit -m 'Add amazing feature'`)
+4. 推送分支 (`git push origin feature/amazing-feature`)
+5. 创建 Pull Request
+
+**需要帮助的领域：**
+- [ ] 跨平台测试与支持
+- [ ] 附加配置格式支持
+- [ ] 大型配置文件性能优化
+- [ ] 高级验证功能
+- [ ] 国际化支持
+
+### 📊 技术特色
+
+- **自定义树形导航**：解决Fyne框架树形控件闪烁问题，使用VBox实现
+- **原生文件对话框**：集成zenity库，提供Windows原生文件选择体验
+- **智能路径显示**：相对路径智能截取显示（最多2级目录）
+- **版本同步管理**：跨所有UI元素的集中版本管理
+- **Schema驱动架构**：从YAML定义零配置生成UI界面
+- **跨平台基础**：基于Go和Fyne构建，为未来平台扩展奠定基础
+
+### 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+### 🙏 致谢
+
+- **Fyne框架**：跨平台GUI开发支持
+- **Zenity库**：原生对话框集成
+- **Go社区**：优秀的工具链和生态系统
+- **所有贡献者**：感谢让ConfigCraft变得更好！
+
+---
+
+<div align="center">
+
+**🌟 如果这个项目对您有帮助，请给我们一个Star！**
+
+[🐛 报告问题](https://github.com/ConfigCraft/configcraft/issues) | 
+[💡 功能请求](https://github.com/ConfigCraft/configcraft/issues) | 
+[📖 文档](https://github.com/ConfigCraft/configcraft/wiki) |
+[🔄 更新日志](./CHANGELOG.md)
+
+*ConfigCraft - 让配置管理变得简单高效* 
+
+</div>

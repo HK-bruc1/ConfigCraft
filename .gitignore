@@ -5,7 +5,7 @@
 *.dylib
 
 # Build output
-/build/dhf-config-manager.exe
+/build/configcraft.exe
 
 # Go build cache (keep go.sum for reproducible builds)
 
