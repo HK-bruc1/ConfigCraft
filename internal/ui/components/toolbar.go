@@ -93,78 +93,41 @@ func (t *Toolbar) showAboutDialog() {
 	aboutDialog.Show()
 }
 
-// showOpenDialog 显示文件打开对话框
+// showOpenDialog 显示文件打开对话框（使用zenity原生对话框）
 func (t *Toolbar) showOpenDialog() {
 	if t.window == nil {
 		return
 	}
 
-	// 创建文件选择对话框，只允许选择YAML文件
-	fileDialog := dialog.NewFileOpen(func(reader fyne.URIReadCloser, err error) {
-		if err != nil {
+	// 使用zenity原生文件对话框
+	zenityDialog := NewZenityFileDialog()
+	
+	// 显示打开对话框
+	filePath, err := zenityDialog.ShowOpenDialog("选择配置文件")
+	if err != nil {
+		// 如果是用户取消，不显示错误
+		if !strings.Contains(err.Error(), "用户取消") {
 			dialog.ShowError(err, t.window)
-			return
 		}
-		if reader == nil {
-			return
-		}
-		defer reader.Close()
-
-		filePath := reader.URI().Path()
-		log.Printf("Selected file to open: %s", filePath)
-
-		// 检查文件扩展名
-		ext := filepath.Ext(filePath)
-		if ext != ".yaml" && ext != ".yml" {
-			dialog.ShowError(fmt.Errorf("请选择YAML格式文件（.yaml或.yml）"), t.window)
-			return
-		}
-
-		// 调用打开回调
-		if t.openCallback != nil {
-			t.openCallback(filePath)
-		}
-	}, t.window)
-
-	// 设置文件过滤器
-	fileDialog.SetFilter(storage.NewExtensionFileFilter([]string{".yaml", ".yml"}))
-	
-	// 正确设置起始目录 - 创建有效的ListableURI
-	if workDir, err := os.Getwd(); err == nil {
-		log.Printf("Setting file dialog to start from: %s", workDir)
-		
-		// 创建文件URI - 在Windows上需要正确的格式
-		var dirURI fyne.URI
-		if strings.HasPrefix(workDir, "/") {
-			// Unix路径
-			dirURI = storage.NewFileURI(workDir)
-		} else {
-			// Windows路径 - 手动构造file:// URI
-			winPath := strings.ReplaceAll(workDir, "\\", "/")
-			if !strings.HasPrefix(winPath, "/") {
-				winPath = "/" + winPath
-			}
-			if uri, err := storage.ParseURI("file://" + winPath); err == nil {
-				dirURI = uri
-			} else {
-				log.Printf("Failed to parse URI: %v", err)
-				dirURI = storage.NewFileURI(workDir)
-			}
-		}
-		
-		// 尝试设置位置，需要转换为ListableURI
-		if dirURI != nil {
-			if listableURI, ok := dirURI.(fyne.ListableURI); ok {
-				fileDialog.SetLocation(listableURI)
-				log.Printf("Set file dialog location to: %s", dirURI.String())
-			} else {
-				log.Printf("Warning: URI is not ListableURI: %s", dirURI.String())
-			}
-		}
+		return
 	}
-	
-	fileDialog.Resize(fyne.NewSize(800, 600))
-	fileDialog.Show()
+
+	// 验证文件格式
+	if err := zenityDialog.ValidateYAMLFile(filePath); err != nil {
+		dialog.ShowError(err, t.window)
+		return
+	}
+
+	// 检查文件是否存在
+	if _, err := os.Stat(filePath); err != nil {
+		dialog.ShowError(fmt.Errorf("文件不存在或无法访问: %v", err), t.window)
+		return
+	}
+
+	// 调用打开回调
+	if t.openCallback != nil {
+		t.openCallback(filePath)
+	}
 }
 
 // showSaveDialog 智能保存 - 优先直接保存，否则显示对话框
@@ -181,7 +144,19 @@ func (t *Toolbar) showSaveDialog() {
 		return
 	}
 
-	// 否则显示保存对话框选择新位置
+	// 否则显示保存对话框选择新位置（混合方案：Fyne对话框 + 目录切换技巧）
+	currentDir, err := os.Getwd()
+	if err == nil {
+		log.Printf("Current working directory: %s", currentDir)
+		// 临时切换到当前目录，确保对话框从正确位置开始
+		originalDir, _ := os.Getwd()
+		if err := os.Chdir(currentDir); err == nil {
+			defer func() {
+				os.Chdir(originalDir)
+			}()
+		}
+	}
+
 	saveDialog := dialog.NewFileSave(func(writer fyne.URIWriteCloser, err error) {
 		if err != nil {
 			dialog.ShowError(err, t.window)
@@ -210,41 +185,7 @@ func (t *Toolbar) showSaveDialog() {
 	saveDialog.SetFileName("dhf_config.yaml")
 	saveDialog.SetFilter(storage.NewExtensionFileFilter([]string{".yaml", ".yml"}))
 	
-	// 正确设置保存对话框的起始目录
-	if workDir, err := os.Getwd(); err == nil {
-		log.Printf("Setting save dialog to start from: %s", workDir)
-		
-		// 创建文件URI - 在Windows上需要正确的格式
-		var dirURI fyne.URI
-		if strings.HasPrefix(workDir, "/") {
-			// Unix路径
-			dirURI = storage.NewFileURI(workDir)
-		} else {
-			// Windows路径 - 手动构造file:// URI
-			winPath := strings.ReplaceAll(workDir, "\\", "/")
-			if !strings.HasPrefix(winPath, "/") {
-				winPath = "/" + winPath
-			}
-			if uri, err := storage.ParseURI("file://" + winPath); err == nil {
-				dirURI = uri
-			} else {
-				log.Printf("Failed to parse URI: %v", err)
-				dirURI = storage.NewFileURI(workDir)
-			}
-		}
-		
-		// 尝试设置位置，需要转换为ListableURI
-		if dirURI != nil {
-			if listableURI, ok := dirURI.(fyne.ListableURI); ok {
-				saveDialog.SetLocation(listableURI)
-				log.Printf("Set save dialog location to: %s", dirURI.String())
-			} else {
-				log.Printf("Warning: URI is not ListableURI: %s", dirURI.String())
-			}
-		}
-	}
-	
-	saveDialog.Resize(fyne.NewSize(800, 600))
+	saveDialog.Resize(fyne.NewSize(900, 650))
 	saveDialog.Show()
 }
 

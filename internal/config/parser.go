@@ -30,6 +30,11 @@ func (p *Parser) LoadSchema(filePath string) error {
 		return fmt.Errorf("failed to parse schema: %w", err)
 	}
 
+	// 验证这是否真的是一个schema文件
+	if len(schema.Sections) == 0 {
+		return fmt.Errorf("file does not contain valid schema sections")
+	}
+
 	p.schema = &schema
 	return nil
 }
@@ -41,7 +46,7 @@ func (p *Parser) GetSchema() *models.Schema {
 func (p *Parser) LoadUserConfig(filePath string) (*models.UserConfig, error) {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
-		return &models.UserConfig{Values: make(map[string]interface{})}, nil
+		return nil, fmt.Errorf("failed to read user config file: %w", err)
 	}
 
 	var config models.UserConfig

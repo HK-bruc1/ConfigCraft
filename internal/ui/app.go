@@ -161,7 +161,6 @@ func (a *App) openConfigFile(filePath string) {
 	
 	// 尝试作为schema文件加载
 	if err := a.parser.LoadSchema(filePath); err == nil {
-		log.Printf("Loaded as schema file")
 		// 成功加载为schema文件
 		a.schema = a.parser.GetSchema()
 		a.userConfig = &models.UserConfig{Values: make(map[string]interface{})}
@@ -202,7 +201,6 @@ func (a *App) openConfigFile(filePath string) {
 		message := fmt.Sprintf("Schema文件已成功加载！\n\n文件路径: %s\n配置分组数: %d\n支持增强功能: 描述信息、提示、可编辑下拉框", 
 			filePath, len(a.schema.Sections))
 		dialog.ShowInformation("Schema加载成功", message, a.window)
-		log.Printf("Successfully loaded schema with %d sections", len(a.schema.Sections))
 		return
 	}
 	
@@ -238,8 +236,6 @@ func (a *App) openConfigFile(filePath string) {
 	message := fmt.Sprintf("配置文件已成功加载！\n\n文件路径: %s\n配置项数: %d\n自动识别分组数: %d", 
 		filePath, len(a.userConfig.Values), len(a.schema.Sections))
 	dialog.ShowInformation("打开成功", message, a.window)
-	log.Printf("Successfully loaded config with %d values, generated %d sections", 
-		len(a.userConfig.Values), len(a.schema.Sections))
 }
 
 // saveConfigFile 保存配置文件并生成conf文件 - 智能保存版本
@@ -282,8 +278,6 @@ func (a *App) saveConfigFile(requestedPath string) {
 
 // generateSchemaFromConfig 从配置文件动态生成schema
 func (a *App) generateSchemaFromConfig(userConfig *models.UserConfig) *models.Schema {
-	log.Printf("Generating dynamic schema from config with %d values", len(userConfig.Values))
-	
 	schema := &models.Schema{
 		SchemaVersion: "1.0",
 		DisplayName:   "动态配置",
