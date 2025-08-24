@@ -1,7 +1,7 @@
 package version
 
 // Version 应用程序版本信息
-const Version = "0.3.4"
+const Version = "0.3.6"
 
 // AppName 应用程序名称
 const AppName = "ConfigCraft"
