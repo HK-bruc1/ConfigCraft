@@ -1,5 +1,5 @@
 @echo off
-echo Building DHF Configuration Manager with TDM-GCC...
+echo Building ConfigCraft with TDM-GCC...
 echo Current directory: %CD%
 
 REM Change to project root directory
@@ -28,14 +28,14 @@ set GOMAXPROCS=4
 
 echo.
 echo Starting build...
-go build -v -ldflags "-s -w -H windowsgui" -o build\dhf-config-manager.exe main.go
+go build -v -ldflags "-s -w -H windowsgui" -o build\configcraft.exe main.go
 
 if %ERRORLEVEL% == 0 (
     echo.
     echo Build successful!
-    if exist "build\dhf-config-manager.exe" (
-        echo File created: build\dhf-config-manager.exe
-        dir "build\dhf-config-manager.exe"
+    if exist "build\configcraft.exe" (
+        echo File created: build\configcraft.exe
+        dir "build\configcraft.exe"
     )
 ) else (
     echo.

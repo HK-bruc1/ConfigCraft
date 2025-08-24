@@ -1,15 +1,15 @@
-# DHF Configuration Manager
+# ConfigCraft
 
-DHF耳机固件配置可视化管理工具 - 将复杂的DHF配置文件通过图形界面进行可视化编辑。
+通用配置管理可视化工具 - 将复杂配置文件通过图形界面进行可视化编辑。
 
 ## 项目概述
 
-DHF Configuration Manager 是为 DHF AC710N-V300P03 SDK 开发的轻量级配置管理工具，旨在简化复杂的耳机固件配置过程。
+ConfigCraft 是一个轻量级的通用配置管理工具，支持将YAML配置转换为各种格式的配置文件，简化复杂的配置管理过程。
 
 ### 技术栈
 - **语言**: Go 1.21+
-- **GUI框架**: Fyne v2.4.3
-- **配置格式**: YAML → DHF conf
+- **GUI框架**: Fyne v2.4.3 + zenity原生对话框
+- **配置格式**: YAML → 通用配置文件
 - **打包方式**: 单exe可执行文件
 
 ## 已实现功能 ✅
@@ -23,22 +23,25 @@ DHF Configuration Manager 是为 DHF AC710N-V300P03 SDK 开发的轻量级配置
 ### 用户界面
 - [x] 现代化GUI界面 (Fyne)
 - [x] 响应式布局 (左侧导航树 + 右侧编辑器)
+- [x] **原生文件对话框** (zenity) - 从当前目录开始选择文件
 - [x] 工具栏 (新建、打开、保存、导出)
 - [x] 状态栏显示
 - [x] 窗口大小自适应 (900x650默认尺寸)
 
 ### 配置管理
-- [x] 完整的DHF配置模型支持
-- [x] 基础配置 (IC型号、VM操作、功放控制等)
-- [x] 通话按键配置 (单击、双击、长按等)
-- [x] 音乐按键配置 (左右耳、TWS状态等)
-- [x] 特殊按键功能 (工厂重置、DUT模式等)
-- [x] LED灯效配置 (TWS、蓝牙、系统事件、充电等)
-- [x] 工厂重置高级配置
+- [x] 完整的通用配置模型支持
+- [x] 基于schema的动态配置项生成
+- [x] 多种配置类型支持 (文本、数字、选项、布尔值等)
+- [x] 分组管理和层级结构
+- [x] 配置验证和默认值支持
+- [x] 智能字段类型检测
+- [x] 可扩展的配置schema系统
 
 ### 文件操作
-- [x] 标准DHF conf格式输出
+- [x] 多种配置文件格式输出
 - [x] YAML用户配置保存/加载
+- [x] **智能文件类型识别** - 自动区分schema文件和配置文件
+- [x] **增强错误处理** - 精确的文件读取和解析错误信息
 - [x] 配置项验证和默认值支持
 - [x] 多种配置控件 (下拉框、复选框、数字输入)
 
@@ -95,7 +98,7 @@ cd DHFConfigTool
 build\build.bat
 
 # 或者手动编译
-go build -ldflags "-s -w -H windowsgui" -o build\dhf-config-manager.exe main.go
+go build -ldflags "-s -w -H windowsgui" -o build\configcraft.exe main.go
 
 # 直接运行GUI (开发模式)
 go run main.go
@@ -106,15 +109,15 @@ cd cmd && go run cli.go
 
 ### 使用方法
 
-1. **GUI版本**: 运行 `build\dhf-config-manager.exe`
+1. **GUI版本**: 运行 `build\configcraft.exe`
 2. **命令行版本**: `cd cmd && go run cli.go`
 3. **配置编辑**: 左侧选择配置分组，右侧编辑具体参数
-4. **导出配置**: 点击 Export 按钮生成标准 DHF conf 文件
+4. **导出配置**: 点击保存按钮生成配置文件
 
 ## 项目结构
 
 ```
-dhf-config-manager/
+configcraft/
 ├── main.go                 # GUI应用程序入口
 ├── go.mod                  # Go模块定义
 ├── customer.conf           # 真实配置文件参考
@@ -130,9 +133,7 @@ dhf-config-manager/
 │           └── toolbar.go # 工具栏组件
 ├── assets/                # 静态资源
 │   └── schemas/           # YAML配置模板
-│       ├── dhf-real-schema.yaml    # 真实配置schema
-│       ├── dhf-schema-en.yaml      # 英文版schema
-│       └── dhf-schema.yaml         # 中文版schema
+│       └── dhf-real-schema.yaml    # 配置schema示例
 ├── build/                 # 构建相关
 │   └── build.bat          # Windows构建脚本
 ├── cmd/                   # 命令行工具
@@ -144,9 +145,9 @@ dhf-config-manager/
 
 ## 技术亮点
 
-- **零学习成本**: 图形化界面，无需了解conf文件语法
+- **零学习成本**: 图形化界面，无需了解复杂配置文件语法
 - **弹性扩展**: 基于YAML schema动态生成UI，易于添加新配置项
-- **高效输出**: 直接生成标准conf格式，无缝集成现有构建流程
+- **高效输出**: 支持多种配置文件格式输出，无缝集成现有构建流程
 - **轻量快速**: 单exe文件，启动速度快 (约18MB)
 
 ## 贡献指南
@@ -215,4 +216,4 @@ dhf-config-manager/
 
 ---
 
-*DHF Configuration Manager - 让固件配置变得简单* 🎧
+*ConfigCraft - 让配置管理变得简单* 🛠️

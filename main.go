@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"dhf-config-manager/internal/ui"
+	"configcraft/internal/ui"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 		log.Fatal("Failed to initialize app:", err)
 	}
 	
-	log.Println("DHF Configuration Manager started. Please load a configuration file using the toolbar.")
+	log.Println("ConfigCraft started. Please load a configuration file using the toolbar.")
 	
 	app.Run()
 }

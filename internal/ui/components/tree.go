@@ -1,7 +1,7 @@
 package components
 
 import (
-	"dhf-config-manager/internal/models"
+	"configcraft/internal/models"
 	"sort"
 	"strings"
 

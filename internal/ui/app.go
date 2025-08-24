@@ -3,13 +3,15 @@ package ui
 import (
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	
-	"dhf-config-manager/internal/config"
-	"dhf-config-manager/internal/models"
-	"dhf-config-manager/internal/ui/components"
+	"configcraft/internal/config"
+	"configcraft/internal/models"
+	"configcraft/internal/ui/components"
+	"configcraft/internal/version"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -30,6 +32,8 @@ type App struct {
 	toolbar    *components.Toolbar
 	
 	currentFilePath string // 记录当前打开的文件路径
+	statusLabel     *widget.Label // 状态栏：显示当前文件路径
+	versionLabel    *widget.Label // 版本信息标签
 }
 
 func NewApp() *App {
@@ -39,7 +43,7 @@ func NewApp() *App {
 	// 使用简化的中文主题支持
 	fyneApp.Settings().SetTheme(NewSimpleChineseTheme())
 	
-	window := fyneApp.NewWindow("DHF Configuration Manager")
+	window := fyneApp.NewWindow("ConfigCraft")
 	
 	// 设置窗口属性 - 保持原定尺寸
 	window.Resize(fyne.NewSize(900, 650))
@@ -57,6 +61,10 @@ func (a *App) Initialize() error {
 	a.tree = components.NewConfigTree()
 	a.editor = components.NewConfigEditor()
 	a.toolbar = components.NewToolbar()
+	
+	// 初始化状态栏标签
+	a.statusLabel = widget.NewLabel("请打开配置文件...")
+	a.versionLabel = widget.NewLabel(version.GetVersionString())
 	
 	a.setupLayout()
 	a.setupCallbacks()
@@ -93,18 +101,18 @@ func (a *App) setupLayout() {
 	mainSplit := container.NewHSplit(leftPanel, rightPanel)
 	mainSplit.SetOffset(0.3) // 左侧30%，右侧70%
 	
-	// 整体布局：工具栏在顶部，分界线，主要内容区域
+	// 整体布局：工具栏在顶部，分界线，主要内容区域，底部状态栏
 	content := container.NewBorder(
 		// 顶部：工具栏 + 分界线
 		container.NewVBox(
 			a.toolbar.Container(),
 			widget.NewSeparator(),
 		),
-		// 底部：状态栏
+		// 底部：智能状态栏
 		container.NewBorder(
 			widget.NewSeparator(), nil,
-			widget.NewLabel("Ready"),
-			widget.NewLabel("DHF Configuration Manager"),
+			a.statusLabel,    // 左侧：当前配置文件路径
+			a.versionLabel,   // 右侧：版本信息
 			nil,
 		),
 		nil, nil, // 左右留空
@@ -113,6 +121,42 @@ func (a *App) setupLayout() {
 	)
 	
 	a.window.SetContent(content)
+}
+
+// updateStatusBar 更新状态栏显示
+func (a *App) updateStatusBar(filePath string) {
+	if filePath == "" {
+		a.statusLabel.SetText("请打开配置文件...")
+	} else {
+		displayPath := a.getRelativePath(filePath)
+		a.statusLabel.SetText(fmt.Sprintf("当前文件: %s", displayPath))
+	}
+}
+
+// getRelativePath 获取相对路径（往上两级）
+func (a *App) getRelativePath(filePath string) string {
+	// 获取当前工作目录
+	currentDir, err := os.Getwd()
+	if err != nil {
+		// 如果获取当前目录失败，返回文件名
+		return filepath.Base(filePath)
+	}
+	
+	// 尝试获取相对路径
+	relPath, err := filepath.Rel(currentDir, filePath)
+	if err != nil {
+		// 如果无法获取相对路径，返回文件名
+		return filepath.Base(filePath)
+	}
+	
+	// 如果相对路径太长，截取最后两级
+	parts := strings.Split(relPath, string(filepath.Separator))
+	if len(parts) > 2 {
+		// 显示 ../parent/file.ext 的形式
+		return filepath.Join("..", parts[len(parts)-2], parts[len(parts)-1])
+	}
+	
+	return relPath
 }
 
 func (a *App) setupCallbacks() {
@@ -168,6 +212,9 @@ func (a *App) openConfigFile(filePath string) {
 		a.editor.SetSchema(a.schema)
 		a.editor.SetConfig(a.userConfig)
 		
+		// 更新状态栏显示schema文件信息
+		a.statusLabel.SetText(fmt.Sprintf("Schema模式: %s", filepath.Base(filePath)))
+		
 		// 刷新界面
 		a.refreshTree()
 		
@@ -221,6 +268,9 @@ func (a *App) openConfigFile(filePath string) {
 	a.editor.SetSchema(a.schema)
 	a.editor.SetConfig(a.userConfig)
 	
+	// 更新状态栏显示当前配置文件
+	a.updateStatusBar(filePath)
+	
 	// 刷新界面
 	a.refreshTree()
 	
@@ -248,6 +298,9 @@ func (a *App) saveConfigFile(requestedPath string) {
 	} else {
 		targetPath = requestedPath
 		log.Printf("Saving to new file: %s", targetPath)
+		// 保存到新位置时更新当前文件路径和状态栏
+		a.currentFilePath = targetPath
+		a.updateStatusBar(targetPath)
 	}
 	
 	if a.userConfig == nil {

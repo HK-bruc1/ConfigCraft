@@ -1,6 +1,51 @@
 # 更新日志
 
-本文档记录了DHF Configuration Manager项目的所有重要变更。
+本文档记录了ConfigCraft项目的所有重要变更。
+
+## [v0.3.4] - 2025-08-24
+
+### 🎯 文件选择功能重大突破
+- **解决核心痛点**: 彻底解决了文件选择对话框无法从当前目录开始的问题
+- **技术方案**: 从Fyne内置对话框迁移到zenity跨平台原生对话框
+- **用户体验**: 文件选择现在从工具运行目录开始，符合用户预期
+
+### 🔧 技术实现详解
+**问题根源**:
+- Fyne的`dialog.NewFileOpen()`在Windows上无法正确设置初始目录
+- `SetLocation()`方法在Windows环境下不生效
+- 用户每次都需要手动导航到项目目录
+
+**解决方案**:
+```go
+// 新增zenity原生对话框支持
+zenityDialog := NewZenityFileDialog()
+filePath, err := zenityDialog.ShowOpenDialog("选择配置文件")
+```
+
+**关键优化**:
+- 集成`github.com/ncruces/zenity`库提供原生对话框
+- 自动从`os.Getwd()`获取的当前工作目录开始
+- 保持YAML文件过滤和验证逻辑不变
+- 完整的错误处理和用户取消检测
+
+### 🛠️ 配置加载逻辑修复
+- **Schema识别增强**: 添加sections数量验证，避免误识别用户配置为schema
+- **错误处理改进**: LoadUserConfig现在正确返回文件读取错误而非空配置
+- **调试信息清理**: 移除大量开发期间的调试日志，保持代码简洁
+
+### 🧹 项目结构优化
+- **文件清理**: 删除所有测试文件、调试文件和重复的YAML文件
+- **依赖整理**: 添加zenity库，更新go.mod和go.sum
+- **schema精简**: 保留dhf-enhanced-schema.yaml作为完整功能展示
+
+### 📋 最终文件结构
+```
+build/
+├── configcraft.exe           # 主程序
+└── sample_config.yaml        # 配置示例
+assets/schemas/
+└── dhf-enhanced-schema.yaml  # 完整schema参考
+```
 
 ## [v0.3.3] - 2025-08-22
 
@@ -186,7 +231,7 @@ FYNE_FONT=C:\Windows\Fonts\simhei.ttf
 - 确保字体文件路径正确且可访问
 ```
 
-这是DHF Configuration Manager发展史上的重要里程碑，真正实现了对中文用户的完整支持！
+这是ConfigCraft发展史上的重要里程碑，真正实现了对中文用户的完整支持！
 
 ---
 

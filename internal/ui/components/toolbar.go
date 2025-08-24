@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	
+	"configcraft/internal/version"
+	
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
@@ -65,13 +67,13 @@ func (t *Toolbar) showAboutDialog() {
 	}
 	
 	// 创建现代化的关于对话框内容
-	appTitle := widget.NewLabelWithStyle("DHF Configuration Manager", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
+	appTitle := widget.NewLabelWithStyle(version.AppName, fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 	
-	versionLabel := widget.NewLabelWithStyle("Version 0.2.1", fyne.TextAlignCenter, fyne.TextStyle{})
+	versionLabel := widget.NewLabelWithStyle("Version "+version.Version, fyne.TextAlignCenter, fyne.TextStyle{})
 	authorLabel := widget.NewLabelWithStyle("Created by Felix", fyne.TextAlignCenter, fyne.TextStyle{})
 	
 	description := widget.NewLabelWithStyle(
-		"DHF AC710N-V300P03 SDK 现代化可视配置工具\n将复杂配置文件转换为友好的图形界面\n\nA modern visual configuration tool for DHF SDK",
+		"Universal Configuration Management Tool\n将复杂配置文件转换为友好的图形界面\n\nA modern visual configuration tool with YAML support",
 		fyne.TextAlignCenter, 
 		fyne.TextStyle{},
 	)

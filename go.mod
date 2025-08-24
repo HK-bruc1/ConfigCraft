@@ -1,9 +1,10 @@
-module dhf-config-manager
+module configcraft
 
 go 1.21
 
 require (
 	fyne.io/fyne/v2 v2.4.3
+	github.com/ncruces/zenity v0.10.14
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -25,7 +26,6 @@ require (
 	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/josephspurrier/goversioninfo v1.4.1 // indirect
 	github.com/jsummers/gobmp v0.0.0-20151104160322-e2ba15ffa76e // indirect
-	github.com/ncruces/zenity v0.10.14 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	github.com/srwiley/oksvg v0.0.0-20221011165216-be6e8873101c // indirect

@@ -5,12 +5,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"dhf-config-manager/internal/config"
+	"configcraft/internal/config"
 )
 
 func main() {
-	fmt.Println("DHF Configuration Manager - CLI Version")
-	fmt.Println("=======================================")
+	fmt.Println("ConfigCraft - CLI Version")
+	fmt.Println("=========================")
 	
 	parser := config.NewParser()
 	
